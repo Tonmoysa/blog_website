@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title_block %}
+    {{ user.username }}'s Blogs
+{% endblock %}
+
+{% block body_block %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="font-size: 2.5rem; color: #333; font-weight: bold;">{{ user.username }}'s Blogs</h2>
+    <div class="row">
+        {% for blog in user.post_author.all %}
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card shadow-lg border-0 rounded-3 h-100 overflow-hidden">
+                    <img src="/media/{{ blog.blog_image }}" class="card-img-top" alt="{{ blog.blog_title }}" style="height: 200px; width: 100%; object-fit: contain; transition: transform 0.3s ease;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size: 1.25rem; font-weight: bold; color: #333;">{{ blog.blog_title }}</h5>
+                        <p class="card-text text-muted small mb-3">{{ blog.publish_date|date:"F j, Y" }}</p>
+                        <p class="card-text" style="color: #555;">{{ blog.blog_content|range_filter|truncatewords:20 }}...</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'App_Blog:blog_details' slug=blog.slug %}" class="btn btn-sm btn-primary" style="background-color: #007bff; border: none; transition: background-color 0.3s ease;">
+                                Read More
+                            </a>
+                            <a href="{% url 'App_Blog:edit_blog' pk=blog.pk %}" class="btn btn-sm btn-warning" style="background-color: #ffc107; border: none; transition: background-color 0.3s ease;">
+                                Edit
+                            </a>
+                            {% if blog.pk %}
+                                <a href="{% url 'App_Blog:delete_blog' pk=blog.pk %}" class="btn btn-sm btn-danger" style="background-color: #dc3545; border: none; transition: background-color 0.3s ease;">
+                                    Delete
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-warning text-center" style="font-size: 1.2rem;">
+                    You haven't created any blogs yet. Start by <a href="{% url 'App_Blog:create_blog' %}" class="alert-link">writing your first blog</a>!
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

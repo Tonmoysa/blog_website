@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title_block %}Profile{% endblock %}
+
+{% block body_block %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <!-- Profile Picture Section -->
+        <div class="col-md-4 mb-4">
+            <div class="card text-center border-0 shadow-sm">
+                <div class="card-body">
+                    {% if user.user_profile %}
+                        <img src="/media/{{ user.user_profile.profile_pic }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3 border" style="width: 200px; height: 200px; object-fit: cover;">
+                        <a href="{% url 'App_Login:change_pro_pic' %}" class="btn btn-outline-primary btn-block">Change Profile Picture</a>
+                    {% else %}
+                        <img src="/media/profile_pics/Avater_image.png" alt="Default Profile Picture" class="img-fluid rounded-circle mb-3 border" style="width: 200px; height: 200px; object-fit: cover;">
+                        <a href="{% url 'App_Login:add_picture' %}" class="btn btn-outline-primary btn-block">Add Profile Picture</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Info Section -->
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body bg-light">
+                    <h2 class="text-center text-primary mb-4">Your Profile</h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Username:</strong> <span class="text-muted">{{ user.username }}</span></li>
+                        <li class="list-group-item"><strong>Email:</strong> <span class="text-muted">{{ user.email }}</span></li>
+                        <li class="list-group-item"><strong>Date Joined:</strong> <span class="text-muted">{{ user.date_joined }}</span></li>
+                        <li class="list-group-item"><strong>Name:</strong> <span class="text-muted">{{ user.first_name }} {{ user.last_name }}</span></li>
+                    </ul>
+                    <div class="mt-4">
+                        <a href="{% url 'App_Login:user_change' %}" class="btn btn-primary btn-block btn-lg">Change Profile Info</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

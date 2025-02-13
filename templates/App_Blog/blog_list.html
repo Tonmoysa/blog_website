@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title_block %}Blog List{% endblock %}
+
+{% block body_block %}
+<div class="container my-5">
+    {% for blog in blogs %}
+        <div class="card mb-5 shadow-lg border-0">
+            <div class="row g-0">
+                <!-- Blog Image with better aspect ratio and full display -->
+                <div class="col-lg-5">
+                    <div class="image-container h-100">
+                        <img src="/media/{{ blog.blog_image }}" alt="{{ blog.blog_title }}" title="{{ blog.blog_title }}" class="w-100 h-100 rounded-start" style="object-fit: cover; min-height: 300px;">
+                    </div>
+                </div>
+                <!-- Blog Content with improved spacing -->
+                <div class="col-lg-7">
+                    <div class="card-body p-4">
+                        <h2 class="card-title text-primary">{{ blog.blog_title }}</h2>
+                        <h6 class="card-subtitle mb-3 text-muted">{{ blog.publish_date|date:"F j, Y" }}</h6>
+                        <p class="card-text">
+                            {{ blog.blog_content|range_filter|linebreaks }}
+<!-- blog_list.html -->
+                    <a href="{% url 'App_Blog:blog_details' slug=blog.slug %}" class="text-primary font-weight-bold">Read more</a>
+                        </p>
+                        <div class="d-flex justify-content-between mt-4">
+                            <h6 class="mb-0">
+                                <i class="fa fa-user text-info"></i> Posted by: 
+                                <a href="#" class="text-info">@{{ blog.author }}</a>
+                            </h6>
+                            <h6 class="mb-0">
+                                <i class="fa fa-thumbs-up text-success"></i> {{ blog.liked_blog.count }} Likes |
+                                <i class="fa fa-comments text-warning"></i> {{ blog.comment_blog.count }} Comments
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-warning text-center shadow-sm">
+            No blogs found. Be the first to <a href="{% url 'App_Blog:create_blog' %}" class="alert-link">create a blog</a>!
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
