@@ -4,33 +4,42 @@
 
 {% block body_block %}
 <div class="container my-5">
+    <!-- Search Bar -->
+    <form method="GET" action="" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search blogs..." value="{{ request.GET.search }}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
     {% for blog in blogs %}
         <div class="card mb-5 shadow-lg border-0">
             <div class="row g-0">
                 <!-- Blog Image with better aspect ratio and full display -->
+                {% if blog.blog_image %}
                 <div class="col-lg-5">
                     <div class="image-container h-100">
                         <img src="/media/{{ blog.blog_image }}" alt="{{ blog.blog_title }}" title="{{ blog.blog_title }}" class="w-100 h-100 rounded-start" style="object-fit: cover; min-height: 300px;">
                     </div>
                 </div>
+                {% endif %}
                 <!-- Blog Content with improved spacing -->
-                <div class="col-lg-7">
+                <div class="col-lg-{% if blog.blog_image %}7{% else %}12{% endif %}">
                     <div class="card-body p-4">
                         <h2 class="card-title text-primary">{{ blog.blog_title }}</h2>
                         <h6 class="card-subtitle mb-3 text-muted">{{ blog.publish_date|date:"F j, Y" }}</h6>
                         <p class="card-text">
                             {{ blog.blog_content|range_filter|linebreaks }}
-<!-- blog_list.html -->
-                    <a href="{% url 'App_Blog:blog_details' slug=blog.slug %}" class="text-primary font-weight-bold">Read more</a>
+                            <a href="{% url 'App_Blog:blog_details' slug=blog.slug %}" class="text-primary font-weight-bold">Read more</a>
                         </p>
                         <div class="d-flex justify-content-between mt-4">
                             <h6 class="mb-0">
                                 <i class="fa fa-user text-info"></i> Posted by: 
-                                <a href="#" class="text-info">@{{ blog.author }}</a>
+                                <a href="{% url 'App_Blog:blog_list' %}?author={{ blog.author.username }}" class="text-info">@{{ blog.author }}</a>
                             </h6>
                             <h6 class="mb-0">
                                 <i class="fa fa-thumbs-up text-success"></i> {{ blog.liked_blog.count }} Likes |
-                                <i class="fa fa-comments text-warning"></i> {{ blog.comment_blog.count }} Comments
+                                <i class="fa fa-comments text-warning"></i> {{ blog.blog_comment.count }} Comments
                             </h6>
                         </div>
                     </div>

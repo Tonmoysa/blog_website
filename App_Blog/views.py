@@ -9,6 +9,7 @@ from App_Blog.forms import CommentForm
 from django.utils.text import slugify
 from django.utils.text import slugify
 import uuid
+from django.db.models import Q
 
 class MyBlog(LoginRequiredMixin,TemplateView):
     template_name='App_Blog/my_blogs.html'
@@ -37,6 +38,31 @@ class BlogList(ListView):
     context_object_name='blogs'
     model=Blog
     template_name='App_Blog/blog_list.html'
+    
+    def get_queryset(self):
+        queryset = Blog.objects.all()
+        order = self.request.GET.get('order', 'newest')
+        media_type = self.request.GET.get('media', 'all')
+        author = self.request.GET.get('author', '')
+        search_query = self.request.GET.get('search', '')
+
+        if order == 'oldest':
+            queryset = queryset.order_by('publish_date')
+        else:
+            queryset = queryset.order_by('-publish_date')
+        
+        if media_type == 'text':
+            queryset = queryset.filter(blog_image='')
+        elif media_type == 'image':
+            queryset = queryset.exclude(blog_image='')
+        
+        if author:
+            queryset = queryset.filter(author__username=author)
+        
+        if search_query:
+            queryset = queryset.filter(Q(blog_title__icontains=search_query) | Q(blog_content__icontains=search_query))
+        
+        return queryset
 
 
 # views.py
