@@ -13,6 +13,7 @@ class Blog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     publish_date = models.DateTimeField(auto_now_add=True)
+    view_count = models.PositiveIntegerField(default=0) 
     
     class Meta:
         ordering = ['-publish_date']

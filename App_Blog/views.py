@@ -49,9 +49,15 @@ def blog_details(request, slug):
         return HttpResponseRedirect(reverse('App_Blog:blog_list'))
     
     # Debugging line to check if slug is coming through 
+    if request.user != blog.author:
+        blog.view_count += 1
+        blog.save(update_fields=['view_count']) 
+        
     comment_form = CommentForm()
     already_liked = Likes.objects.filter(blog=blog, user=request.user)
     liked = bool(already_liked)
+    
+    
 
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)

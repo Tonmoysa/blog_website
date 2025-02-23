@@ -16,6 +16,7 @@
                 <h6>Published on: {{ blog.publish_date }}</h6>
                 <h6>Updated on: {{ blog.updated_at }}</h6>
                 <h6>{{ blog.liked_blog.count }} Likes | {{ blog.blog_comment.count }} Comments</h6>
+                <h6>👀 Views: {{ blog.view_count }}</h6>
             </div>
             <div class="blog-image mt-3">
                 <img src="/media/{{ blog.blog_image }}" class="img-fluid" alt="{{ blog.blog_title }}">
