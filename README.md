@@ -3,6 +3,7 @@
 - Post Management: Create, edit, and delete posts with text and images.
 - Engagement: Like, comment, and track views on posts. 
 - Admin Panel: Admin controls for users, posts, and content moderation.
+- Privacy: Manage profile visibility 
 
 ## ERD
 https://drawsql.app/teams/ostad/diagrams/social-media-application
